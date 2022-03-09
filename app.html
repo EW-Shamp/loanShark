@@ -2,7 +2,7 @@
 <html lang="en" class="h-100">
 
 <head>
-    <title>App Name: A Coding Project by Eric Shamp</title>
+    <title>Loan Shark: A Coding Project by Eric Shamp</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -22,7 +22,7 @@
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#"><img src="/img/logo-mark-white.svg" class="d-inline-block align-text-center"
-                 alt="Eric Shamp Logo" height="24"> APP Name</a>
+                 alt="Eric Shamp Logo" height="24"> Loan Shark</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -39,7 +39,7 @@
                         <a class="nav-link" href="/code.html">The Code</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" target="_blank" href="https://www.github.com/EW-Shamp/">Git Repo</a>
+                        <a class="nav-link" target="_blank" href="https://www.github.com/EW-Shamp/loanShark">Git Repo</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" target="_blank" href="https://ericshamp.us">About</a>
@@ -50,8 +50,67 @@
     </nav>
     <!-- Main Section -->
     <main class="flex-shrink-0">
-        <div class="container">
-
+        <div class="container mt-3">
+            <div class="row row-cols-1 row-cols-lg-2">
+                <div class="col col-lg-4 border border-2">
+                    <form>
+                        <label for="loanAmount">Loan Amount</label>
+                        <input id="loanAmount"  class="form-control" type="number" aria-label="Loan Amount" value="0"/>
+                        <label for="term">Term (Months)</label>
+                        <input id="term" class="form-control" type="number" aria-label="Length of loan" value="0"/>
+                        <label for="rate">Interst Rate</label>
+                        <input id="rate" class="form-control" type="number" aria-label="Interest Rate" value="0"/>
+                        <button id="btnSubmit" type="button" class="btn btn-lg btn-dark text-light" aria-label="CalulateButton">Calculate</button>
+                    </form>
+                </div>
+                <div class="col col-lg-8 border border-2">
+                    <h5>Your Monthly Payments</h5>
+                    <h5 id="moPayment">$</h5>
+                    <div class="row">
+                        <div class="col-6">
+                            <h6>Total Principal</h6>
+                        </div>
+                        <div class="col-6">
+                            <h6 id="totalPrincipal">$</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <h6>Total Interest</h6>
+                        </div>
+                        <div class="col-6">
+                            <h6 id="totalInterest">$</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <h6>Total Cost</h6>
+                        </div>
+                        <div class="col-6">
+                            <h6 id="totalCost">$</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <th>Month</th>
+                                <th>Payment</th>
+                                <th>Principal</th>
+                                <th>Interest</th>
+                                <th>Total Interest</th>
+                                <th>Balance</th>
+                            </thead>
+                            <tbody id="tableBody">
+                                <!-- Results will go here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
     <!-- Footer Section -->
@@ -88,5 +147,8 @@
         integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
     </script>
     <script src="/js/site.js"></script>
+    <script>
+        document.getElementById("btnSubmit").addEventListener("click", getValues);
+    </script>
 </body>
 </html>
