@@ -57,17 +57,156 @@
                     <div class="col-lg-8">
                         <pre class="line-numbers">
                             <code class="language-javascript">
-                                //call hello world
-                                function helloWorld() {
-                                    alert("hello world");
+                                //get values from user
+                                //main / controller function
+                                function getValues() {
+                                    //retrieve values from user
+                                    let loanAmount = document.getElementById("loanAmount").value;
+                                    let term = document.getElementById("term").value;
+                                    let rate = document.getElementById("rate").value;
+                                    let valueObj = {};
+                                    let paymentObj = {};
+                                    //parse values
+                                    loanAmount = parseInt(loanAmount);
+                                    term = parseInt(term);
+                                    rate = parseInt(rate);
+                                    //verify the values are integers and pass them to 
+                                    //renderValues() functions. If not alert the user
+                                    //to enter a valid number
+                                    if (Number.isInteger(loanAmount) && Number.isInteger(term) && Number.isInteger(rate)) {
+                                        valueObj.monthlyPayment = monthlyPayment(loanAmount, term, rate);
+                                        valueObj.totalCost = totalCost(valueObj.monthlyPayment, term);
+                                        valueObj.interest = interest(valueObj.totalCost, loanAmount);
+                                        paymentObj = payments(loanAmount, rate, term, valueObj.monthlyPayment);
+                                    } else {
+                                        alert("Please enter in only numbers");
+                                    }
+                                
+                                    displayValues(valueObj, paymentObj, loanAmount);
+                                }
+                                
+                                //render data from user
+                                //logic function(s)
+                                
+                                //function to determine total monthly payment.
+                                function monthlyPayment(loanAmount, term, rate) {
+                                    let monthPayment = loanAmount * (rate / 1200) / (1 - (1 + rate / 1200) ** (-term));
+                                    monthPayment = monthPayment.toFixed(2);
+                                    return monthPayment;
+                                }
+                                
+                                //function to determine total loan cost
+                                function totalCost(payment, term) {
+                                    let cost = payment * term;
+                                    cost = cost.toFixed(2);
+                                    return cost;
+                                }
+                                
+                                //function to determine total interests
+                                function interest(total, loanAmount) {
+                                    let interest = total - loanAmount;
+                                    interest = interest.toFixed(2);
+                                    return interest;
+                                }
+                                
+                                //function to determine interest payment, pricipal payment, and remaining balance
+                                
+                                function payments(amount, rate, term, monthlyPayment) {
+                                    let amt = amount;
+                                    //the payments object contains 5 arrays to hold data based on each monthly payment
+                                    let payments = {
+                                        interPayment: [],
+                                        princePayment: [],
+                                        balance: [],
+                                        totalInterest: [],
+                                        month: [],
+                                    };  
+                                    let month = 0;
+                                    let totalInterest = 0;
+                                
+                                    for (i = term; i > 0; i--) {
+                                        let interPayment = amt * (rate / 1200);
+                                        let princePayment = monthlyPayment - interPayment;
+                                        interPayment = interPayment.toFixed(2);
+                                        princePayment = princePayment.toFixed(2);
+                                        amt = amt - princePayment;
+                                        amt = amt.toFixed(2)
+                                        month = month + 1;
+                                        totalInterest = Number(totalInterest) + Number(interPayment);
+                                        totalInterest = totalInterest.toFixed(2);
+                                        payments.interPayment.push(interPayment);
+                                        payments.princePayment.push(princePayment);
+                                        payments.balance.push(amt)
+                                        payments.month.push(month);
+                                        payments.totalInterest.push(totalInterest);
+                                    }
+                                    return payments;
+                                }
+                                
+                                //display data to user
+                                //view function
+                                function displayValues(value, payment, loanAmount) {
+                                    document.getElementById("moPayment").innerHTML = `$ ${value.monthlyPayment}`;
+                                    document.getElementById("totalPrincipal").innerHTML = `$ ${loanAmount}`;
+                                    document.getElementById("totalInterest").innerHTML = `$ ${value.interest}`;
+                                    document.getElementById("totalCost").innerHTML = `$ ${value.totalCost}`;
+                                
+                                    //import table body element
+                                    let tableBody = document.getElementById("tableBody");
+                                
+                                    //import template
+                                    let templateRow = document.getElementById("paymentTemplate");
+                                
+                                    //clear table
+                                    tableBody.innerHTML = "";
+                                
+                                    //for loop to assign content to the table rows
+                                    for (i = 0; i < payment.month.length; i++) {
+                                        let tableRow = document.importNode(templateRow.content, true);
+                                
+                                        let rowCols = tableRow.querySelectorAll("td");
+                                        rowCols[0].textContent = payment.month[i];
+                                        rowCols[1].textContent = value.monthlyPayment;
+                                        rowCols[2].textContent = payment.princePayment[i];
+                                        rowCols[3].textContent = payment.interPayment[i];
+                                        rowCols[4].textContent = payment.totalInterest[i];
+                                        rowCols[5].textContent = payment.balance[i];
+                                
+                                        tableBody.appendChild(tableRow);
+                                    }
                                 }
                             </code>
                         </pre>
                     </div>
                     <div class="col-lg-4">
-                        <p>The code is structered in one function</p>
-                        <h5>hello world</h5>
-                        <p>hello world is a function that displays and alert with the message hello world</p>
+                        <p>The code is structered into 6 functions</p>
+                        <h5>getValues()</h5>
+                        <p>This is the main/controller function of the program. It retrieves the data from the UI,
+                            parses the integers, and ensures that the data is in fact numbers. If the data is not actually
+                            numbers then it alerts to the user to enter in valid numbers. If all the data is in fact numbers, then
+                            it first calls the monthlyPayment function to determine the amount of the monthly payment and stores the returned data in the monthlyPayment key of the valueObj.  Next it calls the totalCost function to determine the total cost of the loan and stores the returned data in the totalCost key of the valuObj. 
+                            Next it calls the interest function to determine the total amount of interest for the loan and stores the 
+                            returned data in the interest key of the valueObj. After these three functions complete it calls the 
+                            payments function to determine the payment specific data and stores it in the paymentObj. Finally
+                            it calls the displayValues function to render the data back on to the UI.</p>
+                        <h5>monthlyPayment()</h5>
+                        <p>This is the first of the four logic functions and is used to determine the amount of 
+                            the monthly payment. It is passed in loanAmount, term, and rate from the getValues
+                            function. After the rate is figured it uses the toFixed method to round the payment to
+                            two decimal positions. And finally return the rendered value.</p>
+                        <h5>totalCost()</h5>
+                        <p>This function is used to determine the total cost of the loan. It is passed in the payment
+                            amount and the term. After it renders the data it uses the toFixed method to round the amount
+                            to two decimal positions. Then finally returns the value.</p>
+                        <h5>interest()</h5>
+                        <p>This function is used to determine the total amount of interest that will be paid over the 
+                            length of the loan. It is passed in the total cost of the loan and the initial loan amount.
+                            After the data is rendered it uses the toFixed method to round the value to two decimal
+                            positions. Finally it returns the value.</p>
+                        <h5>payments()</h5>
+                        <p></p>
+                        <h5>displayValues()</h5>
+                        <p></p>
                     </div>
                 </div>
             </div>
