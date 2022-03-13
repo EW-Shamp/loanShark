@@ -53,25 +53,27 @@
         <div class="container mt-3">
             <div class="row row-cols-1 row-cols-lg-2">
                 <div class="col col-lg-4 border border-2">
-                    <form>
-                        <label for="loanAmount">Loan Amount</label>
+                    <form class="">
+                        <label for="loanAmount" class="form-label">Loan Amount</label>
                         <input id="loanAmount"  class="form-control" type="number" aria-label="Loan Amount" value="0"/>
-                        <label for="term">Term (Months)</label>
+                        <label for="term" class="form-label">Term (Months)</label>
                         <input id="term" class="form-control" type="number" aria-label="Length of loan" value="0"/>
-                        <label for="rate">Interst Rate</label>
+                        <label for="rate" class="form-label">Interst Rate</label>
                         <input id="rate" class="form-control" type="number" aria-label="Interest Rate" value="0"/>
-                        <button id="btnSubmit" type="button" class="btn btn-lg btn-dark text-light" aria-label="CalulateButton">Calculate</button>
+                        <div class="d-flex justify-content-end mt-4 mb-2">
+                            <button id="btnSubmit" type="button" class="btn btn-md btn-dark text-light" aria-label="CalulateButton">Calculate</button>
+                        </div>
                     </form>
                 </div>
                 <div class="col col-lg-8 border border-2">
-                    <h5>Your Monthly Payments</h5>
-                    <h5 id="moPayment">$</h5>
-                    <div class="row">
+                    <h3 class="text-center">Your Monthly Payments</h3>
+                    <h3 id="moPayment" class="text-center mt-3">$</h3>
+                    <div class="row mt-5">
                         <div class="col-6">
                             <h6>Total Principal</h6>
                         </div>
                         <div class="col-6">
-                            <h6 id="totalPrincipal">$</h6>
+                            <h6 id="totalPrincipal" class="text-end">$</h6>
                         </div>
                     </div>
                     <div class="row">
@@ -79,7 +81,7 @@
                             <h6>Total Interest</h6>
                         </div>
                         <div class="col-6">
-                            <h6 id="totalInterest">$</h6>
+                            <h6 id="totalInterest" class="text-end">$</h6>
                         </div>
                     </div>
                     <div class="row">
@@ -87,16 +89,16 @@
                             <h6>Total Cost</h6>
                         </div>
                         <div class="col-6">
-                            <h6 id="totalCost">$</h6>
+                            <h6 id="totalCost" class="text-end">$</h6>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col">
-                    <div class="table-responsive">
-                        <table>
-                            <thead>
+                <div class="col-lg-12">
+                    <div class="table-responsive mt-4">
+                        <table class="table table-striped table-bordered">
+                            <thead class="bg-secondary">
                                 <th>Month</th>
                                 <th>Payment</th>
                                 <th>Principal</th>
@@ -141,7 +143,17 @@
             </div>
         </div>
     </footer>
-
+    <!-- template for payment information -->
+    <template id="paymentTemplate">
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </template>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
