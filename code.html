@@ -204,9 +204,27 @@
                             After the data is rendered it uses the toFixed method to round the value to two decimal
                             positions. Finally it returns the value.</p>
                         <h5>payments()</h5>
-                        <p></p>
+                        <p>This function determines the payment specific data. The variable interPayment
+                            is the amount of the payment that is interest. After it is figured it uses the toFixed 
+                            method to round it to two decimal positions, then it is pushed to the interPayment key array of the payments objects. 
+                            The variable princePayment is the amount of the payment that actually goes to the principal of the loan.
+                             After it is figured it uses the toFixed method to round it to two decimal positions, 
+                             then it is pushed to the princePayment key aray of the payments object.  
+                             The variable amt is used to figure and hold a running tally of the remaining loan balance, and is pushed to the balance key array 
+                            of the payments object. The variable totalInterest is used to keep a tally of the toltal interest paid with
+                            each monthly payment and then is pushed to the totalInterest key array of the payments object. The 
+                            variable month is used to keep a tally of the months of the payments and is pushed to the month key of the payments object.</p>
                         <h5>displayValues()</h5>
-                        <p></p>
+                        <p>This is the view function of the program. First we use the getElementById method
+                            to append the innHTML of several HTML elements to display the monthly payment, total 
+                            principal, and total interest, and total cost of the loan in the UI.
+                             After that it uses the same method to obtain the tbody and the template elements that were created in the html document. 
+                             After that it sets the innerHTML of the tbody to a blank string to ensure that we start with a fresh table every time the function
+                              runs. Next we run a for loop to iterate through the month array in the month key of the payment object. 
+                              As it runs the function uses importNode to make a copy of the template element that was created in the html document.
+                               Next it uses the querySelectorAll method to select all the "td" elements of the template and assign them to the rowCols array. 
+                                   Next it assigns the proper key values to the proper row. 
+                                   Finally it uses the appendChild method to append the tbody with the created data.</p>
                     </div>
                 </div>
             </div>
