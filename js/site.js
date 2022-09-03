@@ -15,10 +15,11 @@ function getValues() {
     //renderValues() functions. If not alert the user
     //to enter a valid number
     if (Number.isInteger(loanAmount) && Number.isInteger(term) && Number.isInteger(rate)) {
-        valueObj.monthlyPayment = monthlyPayment(loanAmount, term, rate);
+        let moRate = calcMonthlyRate(rate);
+        valueObj.monthlyPayment = monthlyPayment(loanAmount, term, moRate);
         valueObj.totalCost = totalCost(valueObj.monthlyPayment, term);
         valueObj.interest = interest(valueObj.totalCost, loanAmount);
-        paymentObj = payments(loanAmount, rate, term, valueObj.monthlyPayment);
+        paymentObj = payments(loanAmount, moRate, term, valueObj.monthlyPayment);
     } else {
         alert("Please enter in only numbers");
     }
@@ -31,7 +32,7 @@ function getValues() {
 
 //function to determine total monthly payment.
 function monthlyPayment(loanAmount, term, rate) {
-    let monthPayment = loanAmount * (rate / 1200) / (1 - (1 + rate / 1200) ** (-term));
+    let monthPayment = (loanAmount * (rate / 1200)) / (1 - Math.pow((1 + rate / 1200), -term));
     monthPayment = monthPayment.toFixed(2);
     return monthPayment;
 }
@@ -65,7 +66,7 @@ function payments(amount, rate, term, monthlyPayment) {
     let month = 0;
     let totalInterest = 0;
 
-    for (i = term; i > 0; i--) {
+    for (i = 1; i <= term; i++) {
         let interPayment = amt * (rate / 1200);
         let princePayment = monthlyPayment - interPayment;
         interPayment = interPayment.toFixed(2);
@@ -73,15 +74,27 @@ function payments(amount, rate, term, monthlyPayment) {
         amt = amt - princePayment;
         amt = amt.toFixed(2)
         month = month + 1;
-        totalInterest = Number(totalInterest) + Number(interPayment);
+        totalInterest =  Number(totalInterest) + Number(interPayment);
         totalInterest = totalInterest.toFixed(2);
+
         payments.interPayment.push(interPayment);
         payments.princePayment.push(princePayment);
-        payments.balance.push(amt)
+        //payments.balance.push(amt)
         payments.month.push(month);
         payments.totalInterest.push(totalInterest);
+        if (amt < 0) {
+            payments.balance.push(0)
+        }
+        else {
+            payments.balance.push(amt)
+        }
     }
     return payments;
+}
+
+function calcMonthlyRate(rate) {
+    let mRate = rate / 1200;
+    return mRate.toFixed(4)
 }
 
 //display data to user
