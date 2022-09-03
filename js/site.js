@@ -31,8 +31,10 @@ function getValues() {
 //logic function(s)
 
 //function to determine total monthly payment.
-function monthlyPayment(loanAmount, term, rate) {
-    let monthPayment = (loanAmount * (rate / 1200)) / (1 - Math.pow((1 + rate / 1200), -term));
+function monthlyPayment(loanAmount, term, moRate) {
+    moRate = Number(moRate)
+    let x = Math.pow(1 + moRate, term);
+    let monthPayment = (loanAmount*x*moRate)/(x-1);
     monthPayment = monthPayment.toFixed(2);
     return monthPayment;
 }
@@ -67,7 +69,7 @@ function payments(amount, rate, term, monthlyPayment) {
     let totalInterest = 0;
 
     for (i = 1; i <= term; i++) {
-        let interPayment = amt * (rate / 1200);
+        let interPayment = amt * rate;
         let princePayment = monthlyPayment - interPayment;
         interPayment = interPayment.toFixed(2);
         princePayment = princePayment.toFixed(2);
@@ -77,12 +79,13 @@ function payments(amount, rate, term, monthlyPayment) {
         totalInterest =  Number(totalInterest) + Number(interPayment);
         totalInterest = totalInterest.toFixed(2);
 
+
+        
         payments.interPayment.push(interPayment);
         payments.princePayment.push(princePayment);
-        //payments.balance.push(amt)
         payments.month.push(month);
         payments.totalInterest.push(totalInterest);
-        if (amt < 0) {
+        if (month == term && amt < monthlyPayment) {
             payments.balance.push(0)
         }
         else {
@@ -94,6 +97,7 @@ function payments(amount, rate, term, monthlyPayment) {
 
 function calcMonthlyRate(rate) {
     let mRate = rate / 1200;
+    let y = parseInt(mRate)
     return mRate.toFixed(4)
 }
 
